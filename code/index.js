@@ -94,5 +94,28 @@ function drawTreemap(hierarchy) {
       });
   
   // 绘制文本
-  
+  let labels = treemapContainer.append("g")
+      .classed("labels", true)
+      .attr("transform",`translate(${[-treemapRadius,-treemapRadius]})`)
+      .selectAll("labels")
+      .data(leaves)
+      .enter()
+        .append("g")
+        .classed("label", true)
+        .attr("transform", function(d) {
+          return "translate(" + [d.polygon.site.x, d.polygon.site.y] + ")"
+        })
+        .style("font-size", function(d) {
+          return fontScale(d.data.weight);
+        });
+  labels.append("text")
+    .classed("name", true)
+    .html(function(d) {
+      return (d.data.weight<1)? d.data.code : d.data.name;
+    });
+  labels.append("text")
+    .classed("value", true)
+    .html(function(d) {
+      return d.data.weight + '%';
+    })
 }
